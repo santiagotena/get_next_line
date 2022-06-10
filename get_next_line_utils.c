@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:53 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/09 22:00:38 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/11 00:57:24 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
  * does not appear in the string.
  * 
  * @param s 
- * @param c 
+ * @param c
  * @return char* 
  */
 char	*ft_strchr(const char *s, int c)
