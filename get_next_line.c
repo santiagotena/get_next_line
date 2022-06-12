@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/11 01:06:29 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/12 13:19:59 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,23 @@
 char	*ft_readiter(int fd, char *saved)
 {
 	char	*buf;
-	ssize_t	flag;
-	// size_t	BUFFER_SIZE = 42;
+	int		flag;
+	size_t	BUFFER_SIZE = 42;
 
-	flag = 1;
 	buf = (char *) malloc(BUFFER_SIZE * sizeof(char));
 	if (!buf)
 		return (0);
+	flag = read(fd, buf, BUFFER_SIZE);
+	if (flag < 0)
+	{
+		free(buf);
+		return (NULL);
+	}
 	while (flag != 0)
 	{
-		flag = read(fd, buf, BUFFER_SIZE);
-		if (flag < 0)
-		{
-			free(buf);
-			return (NULL);
-		}
-		saved = malloc(ft_strlen(ft_strjoin(saved, buf)) * sizeof(char));
+		// flag = read(fd, buf, BUFFER_SIZE);
+		
+		// saved = malloc(ft_strlen(ft_strjoin(saved, buf)) * sizeof(char));
 		saved = ft_strjoin(saved, buf);
 		if (ft_strchr(saved, '\n') != NULL)
 			break ;
@@ -58,6 +59,8 @@ char	*ft_returnline(char *saved)
 		counter++;
 	}
 	output[counter] = '\0';
+	if (output[0] == '\0')
+		output = NULL;
 	return (output);
 }
 
@@ -69,10 +72,10 @@ char	*ft_savechars(char *saved)
 	
 	counter = 1;
 	index = 0;
-	while (saved[counter] != '\n')
+	while (saved[counter] != '\n' && saved[counter] != '\0')
 		counter++;
 	counter++;
-	output = malloc((ft_strlen(saved) - (counter + 1)) * sizeof(char));
+	output = malloc((ft_strlen(saved) + 1 - (counter)) * sizeof(char));
 	if (!output)
 		return (NULL);
 	while (saved[counter] != '\0')
@@ -93,11 +96,14 @@ char	*get_next_line(int fd)
 {
 	static char	*saved;
 	char		*print;
-	// size_t	BUFFER_SIZE = 42;
-
-	saved = "";
+	size_t	BUFFER_SIZE = 42;
+	
+	if (!saved)
+		saved = "";
 	print = NULL;
 	saved = ft_readiter(fd, saved);
+	if (!saved)
+		return (NULL);
 	if (saved)
 	{
 		print = ft_returnline(saved);
@@ -112,87 +118,87 @@ char	*get_next_line(int fd)
 	return (print);
 }
 
-// // Debugger //
+// Debugger //
 
-// size_t	ft_strlen(const char *str)
-// {
-// 	size_t		counter;
+size_t	ft_strlen(const char *str)
+{
+	size_t		counter;
 
-// 	counter = 0;
-// 	while (str[counter] != '\0')
-// 	{
-// 		counter += 1;
-// 	}
-// 	return (counter);
-// }
+	counter = 0;
+	while (str[counter] != '\0')
+	{
+		counter += 1;
+	}
+	return (counter);
+}
 
-// char	*ft_strjoin(char const *s1, char const *s2)
-// {
-// 	char	*output;
-// 	size_t	output_index;
-// 	size_t	index;
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*output;
+	size_t	output_index;
+	size_t	index;
 
-// 	if (!s1 || !s2)
-// 		return (NULL);
-// 	output = (char *)malloc(ft_strlen(s1) \
-// 			+ ft_strlen(s2) + 1 * sizeof(char));
-// 	if (!output)
-// 		return (NULL);
-// 	output_index = 0;
-// 	index = 0;
-// 	while (output_index < ft_strlen(s1))
-// 	{
-// 		output[output_index++] = s1[index++];
-// 	}
-// 	index = 0;
-// 	while (output_index < ft_strlen(s1) + ft_strlen(s2))
-// 	{
-// 		output[output_index++] = s2[index++];
-// 	}
-// 	output[output_index] = '\0';
-// 	return (output);
-// }
+	if (!s1 || !s2)
+		return (NULL);
+	output = (char *)malloc(ft_strlen(s1) \
+			+ ft_strlen(s2) + 1 * sizeof(char));
+	if (!output)
+		return (NULL);
+	output_index = 0;
+	index = 0;
+	while (output_index < ft_strlen(s1))
+	{
+		output[output_index++] = s1[index++];
+	}
+	index = 0;
+	while (output_index < ft_strlen(s1) + ft_strlen(s2))
+	{
+		output[output_index++] = s2[index++];
+	}
+	output[output_index] = '\0';
+	return (output);
+}
 
-// char	*ft_strchr(const char *s, int c)
-// {
-// 	int		index;
-// 	char	*ptr;
+char	*ft_strchr(const char *s, int c)
+{
+	int		index;
+	char	*ptr;
 
-// 	ptr = (char *)s;
-// 	index = 0;
-// 	while (ptr[index] != '\0')
-// 	{
-// 		if (ptr[index] == (unsigned char) c)
-// 		{
-// 			return (&ptr[index]);
-// 		}
-// 		index++;
-// 	}
-// 	if (c == '\0' && ptr[index] == '\0')
-// 		return (&ptr[index]);
-// 	return (NULL);
-// }
+	ptr = (char *)s;
+	index = 0;
+	while (ptr[index] != '\0')
+	{
+		if (ptr[index] == (unsigned char) c)
+		{
+			return (&ptr[index]);
+		}
+		index++;
+	}
+	if (c == '\0' && ptr[index] == '\0')
+		return (&ptr[index]);
+	return (NULL);
+}
 
-// #include <stdio.h>
-// #include <fcntl.h>
-// #include <unistd.h>
-// #include "get_next_line.h"
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include "get_next_line.h"
 
-// int	main(int argc, char **argv)
-// {
-// 	int		fd;
-// 	char	*line;
+int	main(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
 
-// 	(void)argc;
-// 	fd = open("compilation.txt", O_RDONLY);
-// 	line = "";
-// 	if (fd == -1)
-// 		return (-1);
-// 	while (line != NULL)
-// 	{
-// 		line = get_next_line(fd);
-// 		printf("%s", line);
-// 	}
-// 	fd = close(fd);
-// 	return (0);
-// }
+	(void)argc;
+	fd = open("test.txt", O_RDONLY);
+	line = "";
+	if (fd == -1)
+		return (-1);
+	while (line != NULL)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+	}
+	fd = close(fd);
+	return (0);
+}
