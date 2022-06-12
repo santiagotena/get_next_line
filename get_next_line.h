@@ -6,16 +6,16 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:51:25 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/10 23:44:55 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 01:09:40 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-// # ifndef BUFFER_SIZE
-// #  define BUFFER_SIZE 42
-// # endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 7
+# endif
 
 # include <fcntl.h>
 # include <unistd.h>
