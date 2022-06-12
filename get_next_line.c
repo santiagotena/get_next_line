@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 01:20:27 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 01:42:15 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*ft_readiter(int fd, char *saved)
 	if (!buf)
 		return (NULL);
 	flag = read(fd, buf, BUFFER_SIZE);
+	buf[BUFFER_SIZE] = '\0';
 	if (flag < 0)
 	{
 		free(buf);
@@ -36,6 +37,7 @@ char	*ft_readiter(int fd, char *saved)
 		if (ft_strchr(saved, '\n') != NULL)
 			break ;
 		flag = read(fd, buf, BUFFER_SIZE);
+		buf[BUFFER_SIZE] = '\0';
 	}
 	free (buf);
 	return (saved);
@@ -195,7 +197,7 @@ char	*get_next_line(int fd)
 // 	char	*line;
 
 // 	(void)argc;
-// 	fd = open("compilation.txt", O_RDONLY);
+// 	fd = open("name.txt", O_RDONLY);
 // 	line = "";
 // 	if (fd == -1)
 // 		return (-1);
