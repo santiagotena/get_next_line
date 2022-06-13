@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 11:45:56 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 12:20:42 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_readiter(int fd, char *saved)
 		saved = temp_saved;
 		if (ft_strchr(saved, '\n') != NULL)
 			break ;
-		flag = read(fd, buf, BUFFER_SIZE);
+		flag = read(fd, buf, BUFFER_SIZE); //buffer overshoots end
 	}
 	free(buf);
 	return (saved);
@@ -61,7 +61,6 @@ char	*ft_returnline(char *saved)
 		counter++;
 	}
 	output[counter] = saved[counter];
-	//counter++; //remove
 	if (output[0] == '\0')
 		output = NULL;
 	return (output);
@@ -101,11 +100,9 @@ char	*get_next_line(int fd)
 	
 	if (!saved)
 		saved = ft_calloc(1, sizeof(char));
-	//print = ft_calloc(1, sizeof(char)); //remove
 	saved = ft_readiter(fd, saved);
 	if (!saved)
 	{
-		//remove free(print); //remove
 		free(saved);
 		return (NULL);
 	}
@@ -220,7 +217,7 @@ char	*get_next_line(int fd)
 // 	char	*line;
 
 // 	(void)argc;
-// 	fd = open("tests/name.txt", O_RDONLY);
+// 	fd = open("tests/gnl.txt", O_RDONLY);
 // 	line = "";
 // 	if (fd == -1)
 // 		return (-1);
