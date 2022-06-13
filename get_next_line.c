@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 01:42:15 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 02:07:42 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_readiter(int fd, char *saved)
 	char	*temp_saved;
 	int		flag;
 
-	buf = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buf = (char *) ft_calloc((BUFFER_SIZE + 1) , sizeof(char));
 	if (!buf)
 		return (NULL);
 	flag = read(fd, buf, BUFFER_SIZE);
@@ -34,7 +34,7 @@ char	*ft_readiter(int fd, char *saved)
 		//free(saved);
 		saved = temp_saved;
 		//free(temp_saved);
-		if (ft_strchr(saved, '\n') != NULL)
+		if (ft_strchr(saved, '\n') != NULL || ft_strchr(saved, '\0') != NULL)
 			break ;
 		flag = read(fd, buf, BUFFER_SIZE);
 		buf[BUFFER_SIZE] = '\0';
