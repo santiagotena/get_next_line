@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 12:20:42 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 13:27:54 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,25 @@ char	*ft_readiter(int fd, char *saved)
 {
 	char	*buf;
 	char	*temp_saved;
-	int		flag;
+	int		bytes;
 
 	buf = (char *) ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buf)
 		return (NULL);
-	flag = read(fd, buf, BUFFER_SIZE);
-	if (flag < 0)
+	bytes = read(fd, buf, BUFFER_SIZE);
+	if (bytes < 0)
 	{
 		free(buf);
 		return (NULL);
 	}
-	while (flag != 0)
+	while (bytes != 0)
 	{
 		temp_saved = ft_strjoin(saved, buf);
 		saved = temp_saved;
 		if (ft_strchr(saved, '\n') != NULL)
 			break ;
-		flag = read(fd, buf, BUFFER_SIZE); //buffer overshoots end
+		bytes = read(fd, buf, BUFFER_SIZE);
+		buf[bytes] = '\0';
 	}
 	free(buf);
 	return (saved);
