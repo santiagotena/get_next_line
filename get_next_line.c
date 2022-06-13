@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 02:07:42 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:14:37 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@ char	*ft_readiter(int fd, char *saved)
 	char	*temp_saved;
 	int		flag;
 
-	buf = (char *) ft_calloc((BUFFER_SIZE + 1) , sizeof(char));
+	buf = (char *) ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buf)
 		return (NULL);
 	flag = read(fd, buf, BUFFER_SIZE);
-	buf[BUFFER_SIZE] = '\0';
 	if (flag < 0)
 	{
 		free(buf);
@@ -37,7 +36,6 @@ char	*ft_readiter(int fd, char *saved)
 		if (ft_strchr(saved, '\n') != NULL || ft_strchr(saved, '\0') != NULL)
 			break ;
 		flag = read(fd, buf, BUFFER_SIZE);
-		buf[BUFFER_SIZE] = '\0';
 	}
 	free (buf);
 	return (saved);
@@ -52,7 +50,7 @@ char	*ft_returnline(char *saved)
 	while (saved[counter] != '\n' && saved[counter] != '\0')
 		counter++;
 	counter++;
-	output = malloc((counter + 1) * sizeof(char));
+	output = ft_calloc((counter + 1), sizeof(char));
 	if (!output)
 		return (NULL);
 	counter = 0;
@@ -63,7 +61,6 @@ char	*ft_returnline(char *saved)
 	}
 	output[counter] = saved[counter];
 	counter++;
-	output[counter] = '\0';
 	if (output[0] == '\0')
 		output = NULL;
 	return (output);
@@ -80,12 +77,11 @@ char	*ft_savechars(char *saved)
 	while (saved[counter] != '\n' && saved[counter] != '\0')
 		counter++;
 	counter++;
-	output = malloc((ft_strlen(saved) + 1 - (counter)) * sizeof(char));
+	output = ft_calloc((ft_strlen(saved) + 1 - (counter)), sizeof(char));
 	if (!output)
 		return (NULL);
 	while (saved[counter] != '\0')
 		output[index++] = saved[counter++];
-	output[index] = '\0';
 	return (output);
 }
 
@@ -103,10 +99,7 @@ char	*get_next_line(int fd)
 	char		*print;
 	
 	if (!saved)
-	{
-		saved = malloc(1 * sizeof(char));
-		*saved = '\0';
-	}
+		saved = ft_calloc(1, sizeof(char));
 	print = NULL;
 	saved = ft_readiter(fd, saved);
 	if (!saved)
@@ -127,85 +120,113 @@ char	*get_next_line(int fd)
 
 // // Debugger //
 
-// size_t	ft_strlen(const char *str)
-// {
-// 	size_t		counter;
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	counter;
+	char	*ptr;
 
-// 	counter = 0;
-// 	while (str[counter] != '\0')
-// 	{
-// 		counter += 1;
-// 	}
-// 	return (counter);
-// }
+	ptr = (char *)s;
+	counter = 0;
+	while (counter < n)
+	{
+		if (ptr[counter] != 0)
+			ptr[counter] = 0;
+		counter++;
+	}
+}
 
-// char	*ft_strjoin(char const *s1, char const *s2)
-// {
-// 	char	*output;
-// 	size_t	output_index;
-// 	size_t	index;
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*output;
 
-// 	if (!s1 || !s2)
-// 		return (NULL);
-// 	output = (char *)malloc(ft_strlen(s1) \
-// 			+ ft_strlen(s2) + 1 * sizeof(char));
-// 	if (!output)
-// 		return (NULL);
-// 	output_index = 0;
-// 	index = 0;
-// 	while (output_index < ft_strlen(s1))
-// 	{
-// 		output[output_index++] = s1[index++];
-// 	}
-// 	index = 0;
-// 	while (output_index < ft_strlen(s1) + ft_strlen(s2))
-// 	{
-// 		output[output_index++] = s2[index++];
-// 	}
-// 	output[output_index] = '\0';
-// 	return (output);
-// }
+	if (count >= 4294967295 || size >= 4294967295)
+		return (NULL);
+	output = malloc(count * size);
+	if (!output)
+		return (NULL);
+	ft_bzero(output, count * size);
+	return (output);
+}
 
-// char	*ft_strchr(const char *s, int c)
-// {
-// 	int		index;
-// 	char	*ptr;
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*output;
+	size_t	output_index;
+	size_t	index;
 
-// 	ptr = (char *)s;
-// 	index = 0;
-// 	while (ptr[index] != '\0')
-// 	{
-// 		if (ptr[index] == (unsigned char) c)
-// 		{
-// 			return (&ptr[index]);
-// 		}
-// 		index++;
-// 	}
-// 	if (c == '\0' && ptr[index] == '\0')
-// 		return (&ptr[index]);
-// 	return (NULL);
-// }
+	if (!s1 || !s2)
+		return (NULL);
+	output = (char *)malloc(ft_strlen(s1) \
+			+ ft_strlen(s2) + 1 * sizeof(char));
+	if (!output)
+		return (NULL);
+	output_index = 0;
+	index = 0;
+	while (output_index < ft_strlen(s1))
+	{
+		output[output_index++] = s1[index++];
+	}
+	index = 0;
+	while (output_index < ft_strlen(s1) + ft_strlen(s2))
+	{
+		output[output_index++] = s2[index++];
+	}
+	output[output_index] = '\0';
+	return (output);
+}
 
-// #include <stdio.h>
-// #include <fcntl.h>
-// #include <unistd.h>
-// #include "get_next_line.h"
+size_t	ft_strlen(const char *str)
+{
+	size_t		counter;
 
-// int	main(int argc, char **argv)
-// {
-// 	int		fd;
-// 	char	*line;
+	counter = 0;
+	while (str[counter] != '\0')
+	{
+		counter += 1;
+	}
+	return (counter);
+}
 
-// 	(void)argc;
-// 	fd = open("name.txt", O_RDONLY);
-// 	line = "";
-// 	if (fd == -1)
-// 		return (-1);
-// 	while (line != NULL)
-// 	{
-// 		line = get_next_line(fd);
-// 		printf("%s", line);
-// 	}
-// 	fd = close(fd);
-// 	return (0);
-// }
+char	*ft_strchr(const char *s, int c)
+{
+	int		index;
+	char	*ptr;
+
+	ptr = (char *)s;
+	index = 0;
+	while (ptr[index] != '\0')
+	{
+		if (ptr[index] == (unsigned char) c)
+		{
+			return (&ptr[index]);
+		}
+		index++;
+	}
+	if (c == '\0' && ptr[index] == '\0')
+		return (&ptr[index]);
+	return (NULL);
+}
+
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include "get_next_line.h"
+
+int	main(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
+
+	(void)argc;
+	fd = open("name.txt", O_RDONLY);
+	line = "";
+	if (fd == -1)
+		return (-1);
+	while (line != NULL)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+	}
+	fd = close(fd);
+	return (0);
+}
