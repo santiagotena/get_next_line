@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:53 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/11 00:57:24 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 02:11:50 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,49 @@ char	*ft_strchr(const char *s, int c)
 	if (c == '\0' && ptr[index] == '\0')
 		return (&ptr[index]);
 	return (NULL);
+}
+
+/**
+ * @brief Allocates enough space for count objects that are size bytes of 
+ * memory each and returns a pointer to the allocated memory.  The 
+ * allocated memory is filled with bytes of value zero. If there is an 
+ * error, they return a NULL pointer and set errno to ENOMEM.
+ * 
+ * @param count 
+ * @param size Use sizeof(<data_type>)
+ * @return void* 
+ */
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*output;
+
+	if (count >= 4294967295 || size >= 4294967295)
+		return (NULL);
+	output = malloc(count * size);
+	if (!output)
+		return (NULL);
+	ft_bzero(output, count * size);
+	return (output);
+}
+
+/**
+ * @brief Writes n zeroed bytes to the string s. 
+ * If n is zero, bzero() does nothing.
+ * 
+ * @param s 
+ * @param n 
+ */
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	counter;
+	char	*ptr;
+
+	ptr = (char *)s;
+	counter = 0;
+	while (counter < n)
+	{
+		if (ptr[counter] != 0)
+			ptr[counter] = 0;
+		counter++;
+	}
 }
