@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 10:34:06 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 11:45:56 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ char	*ft_readiter(int fd, char *saved)
 	{
 		temp_saved = ft_strjoin(saved, buf);
 		saved = temp_saved;
-		if (ft_strchr(saved, '\n') != NULL || ft_strchr(saved, '\0') != NULL)
-		{
+		if (ft_strchr(saved, '\n') != NULL)
 			break ;
-		}
 		flag = read(fd, buf, BUFFER_SIZE);
 	}
 	free(buf);
@@ -46,13 +44,16 @@ char	*ft_returnline(char *saved)
 	size_t	counter;
 	char	*output;
 	
-	counter = 1;
+	counter = 0;
 	while (saved[counter] != '\n' && saved[counter] != '\0')
 		counter++;
 	counter++;
 	output = ft_calloc((counter + 1), sizeof(char));
 	if (!output)
+	{
+		free(output);
 		return (NULL);
+	}
 	counter = 0;
 	while (saved[counter] != '\n' && saved[counter] != '\0')
 	{
@@ -60,7 +61,7 @@ char	*ft_returnline(char *saved)
 		counter++;
 	}
 	output[counter] = saved[counter];
-	counter++;
+	//counter++; //remove
 	if (output[0] == '\0')
 		output = NULL;
 	return (output);
@@ -72,7 +73,7 @@ char	*ft_savechars(char *saved)
 	size_t	index;
 	char	*output;
 	
-	counter = 1;
+	counter = 0;
 	index = 0;
 	while (saved[counter] != '\n' && saved[counter] != '\0')
 		counter++;
@@ -100,12 +101,16 @@ char	*get_next_line(int fd)
 	
 	if (!saved)
 		saved = ft_calloc(1, sizeof(char));
-	print = NULL;
+	//print = ft_calloc(1, sizeof(char)); //remove
 	saved = ft_readiter(fd, saved);
 	if (!saved)
+	{
+		//remove free(print); //remove
+		free(saved);
 		return (NULL);
-		print = ft_returnline(saved);
-		saved = ft_savechars(saved);
+	}
+	print = ft_returnline(saved); //allocate print (?)
+	saved = ft_savechars(saved);
 	if (!print)
 	{
 		free(saved);
@@ -115,7 +120,7 @@ char	*get_next_line(int fd)
 	return (print);
 }
 
-// // Debugger //
+// // ---------- Debugger ---------- //
 
 // void	ft_bzero(void *s, size_t n)
 // {
@@ -215,7 +220,7 @@ char	*get_next_line(int fd)
 // 	char	*line;
 
 // 	(void)argc;
-// 	fd = open("name.txt", O_RDONLY);
+// 	fd = open("tests/name.txt", O_RDONLY);
 // 	line = "";
 // 	if (fd == -1)
 // 		return (-1);
