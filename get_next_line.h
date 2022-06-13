@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:51:25 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 10:13:17 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/13 13:45:47 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 7
+#  define BUFFER_SIZE 1
 # endif
 
 # include <fcntl.h>
