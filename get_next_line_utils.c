@@ -6,31 +6,55 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:53 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 02:11:50 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/15 14:07:10 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /**
- * @brief Computes the length of the string s.  The strnlen() function 
- * attempts to compute the length of s, but never scans beyond the first 
- * maxlen bytes of s. Returns the number of characters that precede the 
- * terminating NUL character.
+ * @brief Writes n zeroed bytes to the string s. 
+ * If n is zero, bzero() does nothing.
  * 
- * @param str 
- * @return size_t 
+ * @param s 
+ * @param n 
  */
-size_t	ft_strlen(const char *str)
+void	ft_bzero(void *s, size_t n)
 {
-	size_t		counter;
+	size_t	counter;
+	char	*ptr;
 
+	ptr = (char *)s;
 	counter = 0;
-	while (str[counter] != '\0')
+	while (counter < n)
 	{
-		counter += 1;
+		if (ptr[counter] != 0)
+			ptr[counter] = 0;
+		counter++;
 	}
-	return (counter);
+}
+
+/**
+ * @brief Allocates enough space for count objects that are size bytes of 
+ * memory each and returns a pointer to the allocated memory.  The 
+ * allocated memory is filled with bytes of value zero. If there is an 
+ * error, they return a NULL pointer and set errno to ENOMEM.
+ * 
+ * @param count 
+ * @param size Use sizeof(<data_type>)
+ * @return void* 
+ */
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*output;
+
+	if (count >= 4294967295 || size >= 4294967295)
+		return (NULL);
+	output = malloc(count * size);
+	if (!output)
+		return (NULL);
+	ft_bzero(output, count * size);
+	return (output);
 }
 
 /**
@@ -71,6 +95,27 @@ char	*ft_strjoin(char const *s1, char const *s2)
 }
 
 /**
+ * @brief Computes the length of the string s.  The strnlen() function 
+ * attempts to compute the length of s, but never scans beyond the first 
+ * maxlen bytes of s. Returns the number of characters that precede the 
+ * terminating NUL character.
+ * 
+ * @param str 
+ * @return size_t 
+ */
+size_t	ft_strlen(const char *str)
+{
+	size_t		counter;
+
+	counter = 0;
+	while (str[counter] != '\0')
+	{
+		counter += 1;
+	}
+	return (counter);
+}
+
+/**
  * @brief Locates the first occurrence of c (converted to a char) in the
  * string pointed to by s.  The terminating null character is considered to 
  * be part of the string; therefore if c is `\0', the functions locate the 
@@ -101,49 +146,4 @@ char	*ft_strchr(const char *s, int c)
 	if (c == '\0' && ptr[index] == '\0')
 		return (&ptr[index]);
 	return (NULL);
-}
-
-/**
- * @brief Allocates enough space for count objects that are size bytes of 
- * memory each and returns a pointer to the allocated memory.  The 
- * allocated memory is filled with bytes of value zero. If there is an 
- * error, they return a NULL pointer and set errno to ENOMEM.
- * 
- * @param count 
- * @param size Use sizeof(<data_type>)
- * @return void* 
- */
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*output;
-
-	if (count >= 4294967295 || size >= 4294967295)
-		return (NULL);
-	output = malloc(count * size);
-	if (!output)
-		return (NULL);
-	ft_bzero(output, count * size);
-	return (output);
-}
-
-/**
- * @brief Writes n zeroed bytes to the string s. 
- * If n is zero, bzero() does nothing.
- * 
- * @param s 
- * @param n 
- */
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	counter;
-	char	*ptr;
-
-	ptr = (char *)s;
-	counter = 0;
-	while (counter < n)
-	{
-		if (ptr[counter] != 0)
-			ptr[counter] = 0;
-		counter++;
-	}
 }
