@@ -6,13 +6,13 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/13 13:49:37 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/15 17:58:50 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_readiter(int fd, char *saved)
+char	*ft_readline(int fd, char *saved)
 {
 	char	*buf;
 	char	*temp_saved;
@@ -106,136 +106,143 @@ void	ft_free_str(char **str)
 char	*get_next_line(int fd)
 {
 	static char	*saved;
+	char		*temp;
 	char		*print;
 	
+	temp = NULL;
+	print = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	if (!saved)
 		saved = ft_calloc(1, sizeof(char));
-	saved = ft_readiter(fd, saved);
+	saved = ft_readline(fd, saved);
 	if (!saved)
 	{
 		free(saved);
+		free(temp);
 		return (NULL);
 	}
-	print = ft_returnline(saved); //allocate print (?)
+	print = ft_returnline(saved);
 	saved = ft_savechars(saved);
 	if (!print)
 	{
 		free(saved);
+		free(temp);
 		free(print);
 		return (NULL);
 	}
 	return (print);
 }
 
-// ---------- Debugger ---------- //
+// // ---------- Debugger ---------- //
 
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	counter;
-	char	*ptr;
+// void	ft_bzero(void *s, size_t n)
+// {
+// 	size_t	counter;
+// 	char	*ptr;
 
-	ptr = (char *)s;
-	counter = 0;
-	while (counter < n)
-	{
-		if (ptr[counter] != 0)
-			ptr[counter] = 0;
-		counter++;
-	}
-}
+// 	ptr = (char *)s;
+// 	counter = 0;
+// 	while (counter < n)
+// 	{
+// 		if (ptr[counter] != 0)
+// 			ptr[counter] = 0;
+// 		counter++;
+// 	}
+// }
 
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*output;
+// void	*ft_calloc(size_t count, size_t size)
+// {
+// 	void	*output;
 
-	if (count >= 4294967295 || size >= 4294967295)
-		return (NULL);
-	output = malloc(count * size);
-	if (!output)
-		return (NULL);
-	ft_bzero(output, count * size);
-	return (output);
-}
+// 	if (count >= 4294967295 || size >= 4294967295)
+// 		return (NULL);
+// 	output = malloc(count * size);
+// 	if (!output)
+// 		return (NULL);
+// 	ft_bzero(output, count * size);
+// 	return (output);
+// }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*output;
-	size_t	output_index;
-	size_t	index;
+// char	*ft_strjoin(char const *s1, char const *s2)
+// {
+// 	char	*output;
+// 	size_t	output_index;
+// 	size_t	index;
 
-	if (!s1 || !s2)
-		return (NULL);
-	output = (char *)malloc(ft_strlen(s1) \
-			+ ft_strlen(s2) + 1 * sizeof(char));
-	if (!output)
-		return (NULL);
-	output_index = 0;
-	index = 0;
-	while (output_index < ft_strlen(s1))
-	{
-		output[output_index++] = s1[index++];
-	}
-	index = 0;
-	while (output_index < ft_strlen(s1) + ft_strlen(s2))
-	{
-		output[output_index++] = s2[index++];
-	}
-	output[output_index] = '\0';
-	return (output);
-}
+// 	if (!s1 || !s2)
+// 		return (NULL);
+// 	output = (char *)malloc(ft_strlen(s1) \
+// 			+ ft_strlen(s2) + 1 * sizeof(char));
+// 	if (!output)
+// 		return (NULL);
+// 	output_index = 0;
+// 	index = 0;
+// 	while (output_index < ft_strlen(s1))
+// 	{
+// 		output[output_index++] = s1[index++];
+// 	}
+// 	index = 0;
+// 	while (output_index < ft_strlen(s1) + ft_strlen(s2))
+// 	{
+// 		output[output_index++] = s2[index++];
+// 	}
+// 	output[output_index] = '\0';
+// 	return (output);
+// }
 
-size_t	ft_strlen(const char *str)
-{
-	size_t		counter;
+// size_t	ft_strlen(const char *str)
+// {
+// 	size_t		counter;
 
-	counter = 0;
-	while (str[counter] != '\0')
-	{
-		counter += 1;
-	}
-	return (counter);
-}
+// 	counter = 0;
+// 	while (str[counter] != '\0')
+// 	{
+// 		counter += 1;
+// 	}
+// 	return (counter);
+// }
 
-char	*ft_strchr(const char *s, int c)
-{
-	int		index;
-	char	*ptr;
+// char	*ft_strchr(const char *s, int c)
+// {
+// 	int		index;
+// 	char	*ptr;
 
-	ptr = (char *)s;
-	index = 0;
-	while (ptr[index] != '\0')
-	{
-		if (ptr[index] == (unsigned char) c)
-		{
-			return (&ptr[index]);
-		}
-		index++;
-	}
-	if (c == '\0' && ptr[index] == '\0')
-		return (&ptr[index]);
-	return (NULL);
-}
+// 	ptr = (char *)s;
+// 	index = 0;
+// 	while (ptr[index] != '\0')
+// 	{
+// 		if (ptr[index] == (unsigned char) c)
+// 		{
+// 			return (&ptr[index]);
+// 		}
+// 		index++;
+// 	}
+// 	if (c == '\0' && ptr[index] == '\0')
+// 		return (&ptr[index]);
+// 	return (NULL);
+// }
 
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include "get_next_line.h"
+// #include <stdio.h>
+// #include <fcntl.h>
+// #include <unistd.h>
+// #include "get_next_line.h"
 
-int	main(int argc, char **argv)
-{
-	int		fd;
-	char	*line;
+// int	main(int argc, char **argv)
+// {
+// 	int		fd;
+// 	char	*line;
 
-	(void)argc;
-	fd = open("tests/gnl.txt", O_RDONLY);
-	line = "";
-	if (fd == -1)
-		return (-1);
-	while (line != NULL)
-	{
-		line = get_next_line(fd);
-		printf("%s", line);
-	}
-	fd = close(fd);
-	return (0);
-}
+// 	(void)argc;
+// 	fd = open("tests/gnl.txt", O_RDONLY);
+// 	line = "";
+// 	if (fd == -1)
+// 		return (-1);
+// 	while (line != NULL)
+// 	{
+// 		line = get_next_line(fd);
+// 		printf("%s", line);
+// 	}
+// 	fd = close(fd);
+// 	return (0);
+// }
