@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/15 17:58:50 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/15 18:15:38 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_returnline(char *saved)
 {
 	size_t	counter;
 	char	*output;
-	
+
 	counter = 0;
 	while (saved[counter] != '\n' && saved[counter] != '\0')
 		counter++;
@@ -72,7 +72,7 @@ char	*ft_savechars(char *saved)
 	size_t	counter;
 	size_t	index;
 	char	*output;
-	
+
 	counter = 0;
 	index = 0;
 	while (saved[counter] != '\n' && saved[counter] != '\0')
@@ -106,11 +106,8 @@ void	ft_free_str(char **str)
 char	*get_next_line(int fd)
 {
 	static char	*saved;
-	char		*temp;
 	char		*print;
-	
-	temp = NULL;
-	print = NULL;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!saved)
@@ -119,7 +116,6 @@ char	*get_next_line(int fd)
 	if (!saved)
 	{
 		free(saved);
-		free(temp);
 		return (NULL);
 	}
 	print = ft_returnline(saved);
@@ -127,7 +123,6 @@ char	*get_next_line(int fd)
 	if (!print)
 	{
 		free(saved);
-		free(temp);
 		free(print);
 		return (NULL);
 	}
