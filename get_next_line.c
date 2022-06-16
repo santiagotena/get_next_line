@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/16 23:51:14 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/17 00:25:08 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ char	*ft_returnline(char *saved)
 		counter++;
 	}
 	output[counter] = saved[counter];
-	if (output[0] == '\0')
-		output = NULL;
+	free(saved);
 	return (output);
 }
 
@@ -72,7 +71,7 @@ char	*get_next_line(int fd)
 	char static	*line;
 	char		*temp;
 	int			bytes;
-	char		*print;
+	// char		*print;
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -84,27 +83,21 @@ char	*get_next_line(int fd)
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes < 0)
 		{
-			// free(buffer);
 			return(NULL);
 		}
 		buffer[bytes] = '\0';
 		temp = ft_strjoin(line, buffer);
-		// free(line);
-		// free(buffer);
+		free(line);
 		line = ft_strdup(temp);
-		// free(temp);
+		free(temp);
 		if (ft_strchr(line, '\n') != NULL || bytes < BUFFER_SIZE)
 			break ;
 	}
 	if (line[0] == '\0')
 		return (NULL);
-	print = ft_returnline(line);
-	line = ft_savechars(line);
-	// temp = ft_savechars(line);
-	// free(line);
-	// line = ft_strdup(temp);
-	// free(temp);
-	return (print);
+	temp = ft_strdup(line);
+	line = ft_savechars(temp);
+	return (ft_returnline(temp));
 }
 
 // // ---------- Debugger ---------- //

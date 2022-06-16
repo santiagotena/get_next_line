@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:53 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/16 19:55:08 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/17 00:09:42 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*ft_strdup(const char *s1)
  * @param s2 
  * @return char* 
  */
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*output;
 	size_t	output_index;
@@ -125,6 +125,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		output[output_index++] = s2[index++];
 	}
 	output[output_index] = '\0';
+	// free(s1);
+	// free(s2);
 	return (output);
 }
 
