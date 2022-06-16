@@ -6,33 +6,11 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:53 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/17 00:09:42 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/17 00:37:16 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/**
- * @brief Writes n zeroed bytes to the string s. 
- * If n is zero, bzero() does nothing.
- * 
- * @param s 
- * @param n 
- */
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	counter;
-	char	*ptr;
-
-	ptr = (char *)s;
-	counter = 0;
-	while (counter < n)
-	{
-		if (ptr[counter] != 0)
-			ptr[counter] = 0;
-		counter++;
-	}
-}
 
 /**
  * @brief Allocates enough space for count objects that are size bytes of 
@@ -47,13 +25,22 @@ void	ft_bzero(void *s, size_t n)
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*output;
-
+	size_t	counter;
+	char	*ptr;
+	
 	if (count >= 4294967295 || size >= 4294967295)
 		return (NULL);
+	counter = 0;
 	output = malloc(count * size);
 	if (!output)
 		return (NULL);
-	ft_bzero(output, count * size);
+	ptr = (char *)output;
+	while (counter < count * size)
+	{
+		if (ptr[counter] != 0)
+			ptr[counter] = 0;
+		counter++;
+	}
 	return (output);
 }
 
@@ -125,8 +112,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		output[output_index++] = s2[index++];
 	}
 	output[output_index] = '\0';
-	// free(s1);
-	// free(s2);
 	return (output);
 }
 

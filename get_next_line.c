@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/17 00:25:08 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/17 00:28:57 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ char	*get_next_line(int fd)
 	char static	*line;
 	char		*temp;
 	int			bytes;
-	// char		*print;
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);

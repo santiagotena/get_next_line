@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:51:25 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/17 00:08:12 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/17 00:37:24 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <stdlib.h>
 
 char	*get_next_line(int fd);
-void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2);
