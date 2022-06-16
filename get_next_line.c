@@ -6,39 +6,11 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/15 18:15:38 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/16 23:51:14 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_readline(int fd, char *saved)
-{
-	char	*buf;
-	char	*temp_saved;
-	int		bytes;
-
-	buf = (char *) ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!buf)
-		return (NULL);
-	bytes = read(fd, buf, BUFFER_SIZE);
-	if (bytes < 0)
-	{
-		free(buf);
-		return (NULL);
-	}
-	while (bytes != 0)
-	{
-		temp_saved = ft_strjoin(saved, buf);
-		saved = temp_saved;
-		if (ft_strchr(saved, '\n') != NULL)
-			break ;
-		bytes = read(fd, buf, BUFFER_SIZE);
-		buf[bytes] = '\0';
-	}
-	free(buf);
-	return (saved);
-}
 
 char	*ft_returnline(char *saved)
 {
@@ -86,15 +58,6 @@ char	*ft_savechars(char *saved)
 	return (output);
 }
 
-void	ft_free_str(char **str)
-{
-	if (str != NULL && *str != NULL)
-	{
-		free(*str);
-		*str = NULL;
-	}
-}
-
 /**
  * @brief Get the next line object. Returns a line read from a file descriptor.
  * Read line:  correct behavior. 
@@ -105,27 +68,42 @@ void	ft_free_str(char **str)
  */
 char	*get_next_line(int fd)
 {
-	static char	*saved;
+	char		buffer[BUFFER_SIZE + 1];
+	char static	*line;
+	char		*temp;
+	int			bytes;
 	char		*print;
-
+	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!saved)
-		saved = ft_calloc(1, sizeof(char));
-	saved = ft_readline(fd, saved);
-	if (!saved)
+	bytes = 1;
+	if (!line)
+		line = ft_calloc(1, sizeof(char));
+	while (bytes > 0)
 	{
-		free(saved);
-		return (NULL);
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes < 0)
+		{
+			// free(buffer);
+			return(NULL);
+		}
+		buffer[bytes] = '\0';
+		temp = ft_strjoin(line, buffer);
+		// free(line);
+		// free(buffer);
+		line = ft_strdup(temp);
+		// free(temp);
+		if (ft_strchr(line, '\n') != NULL || bytes < BUFFER_SIZE)
+			break ;
 	}
-	print = ft_returnline(saved);
-	saved = ft_savechars(saved);
-	if (!print)
-	{
-		free(saved);
-		free(print);
+	if (line[0] == '\0')
 		return (NULL);
-	}
+	print = ft_returnline(line);
+	line = ft_savechars(line);
+	// temp = ft_savechars(line);
+	// free(line);
+	// line = ft_strdup(temp);
+	// free(temp);
 	return (print);
 }
 
@@ -156,6 +134,40 @@ char	*get_next_line(int fd)
 // 	if (!output)
 // 		return (NULL);
 // 	ft_bzero(output, count * size);
+// 	return (output);
+// }
+
+// /**
+//  * @brief Allocates sufficient memory for a copy of the string s1, does the 
+//  * copy, and returns a pointer to it.  The pointer may subsequently be used 
+//  * as an argument to the function free(3).
+//  * 
+//  * @param s1 
+//  * @return char* 
+//  */
+// char	*ft_strdup(const char *s1)
+// {
+// 	size_t	count;
+// 	char	*output;
+// 	size_t	index;
+
+// 	index = 0;
+// 	count = 0;
+// 	while (s1[index] != '\0')
+// 	{
+// 		count++;
+// 		index++;
+// 	}
+// 	output = (char *)malloc((count + 1) * sizeof(char));
+// 	if (!output)
+// 		return (NULL);
+// 	index = 0;
+// 	while (index < count)
+// 	{
+// 		output[index] = s1[index];
+// 		index++;
+// 	}
+// 	output[index] = '\0';
 // 	return (output);
 // }
 
@@ -226,17 +238,17 @@ char	*get_next_line(int fd)
 // int	main(int argc, char **argv)
 // {
 // 	int		fd;
-// 	char	*line;
+// 	char	*out;
 
 // 	(void)argc;
-// 	fd = open("tests/gnl.txt", O_RDONLY);
-// 	line = "";
+// 	fd = open("tests/name.txt", O_RDONLY);
+// 	out = "";
 // 	if (fd == -1)
 // 		return (-1);
-// 	while (line != NULL)
+// 	while (out != NULL)
 // 	{
-// 		line = get_next_line(fd);
-// 		printf("%s", line);
+// 		out = get_next_line(fd);
+// 		printf("%s", out);
 // 	}
 // 	fd = close(fd);
 // 	return (0);
