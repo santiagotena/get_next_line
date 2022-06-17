@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/17 09:47:36 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/17 11:00:57 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_next_line(int fd)
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes < 0)
 		{
-			free(line);
+			// free(line);
 			return (NULL);
 		}
 		buffer[bytes] = '\0';
@@ -94,9 +94,11 @@ char	*get_next_line(int fd)
 	if (line[0] == '\0')
 	{
 		free(line);
+		// free(temp);
 		return (NULL);
 	}
 	temp = ft_strdup(line);
+	free(line);
 	line = ft_savechars(temp);
 	return (ft_returnline(temp));
 }
