@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/18 10:46:39 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/18 12:25:36 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,20 @@ char	*ft_savechars(char *line)
 	return (output);
 }
 
+void	ft_free_strs(char **str, char **str2)
+{
+	if (str && *str)
+	{
+		free(*str);
+		*str = NULL;
+	}
+	if (str2 && *str2)
+	{
+		free(*str2);
+		*str2 = NULL;
+	}
+}
+
 /**
  * @brief Get the next line object. Returns a line read from a file descriptor.
  * Read line:  correct behavior. 
@@ -74,7 +88,6 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	// temp = ft_calloc(1, sizeof(char));
 	if (!line)
 		line = ft_calloc(1, sizeof(char));
 	bytes = 1;
@@ -83,25 +96,24 @@ char	*get_next_line(int fd)
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes < 0)
 		{
-			// free(line);
+			ft_free_strs(&line, 0);
 			return (NULL);
 		}
 		buffer[bytes] = '\0';
 		temp = ft_strjoin(line, buffer);
-		free(line);
+		ft_free_strs(&line, 0);
 		line = ft_strdup(temp);
-		free(temp);
+		ft_free_strs(&temp, 0);
 		if (ft_strchr(line, '\n') != NULL || bytes < BUFFER_SIZE)
 			break ;
 	}
 	if (!line || line[0] == '\0')
 	{
-		free(line);
-		// free(temp);
+		ft_free_strs(&line, &temp);
 		return (NULL);
 	}
 	temp = ft_strdup(line);
-	free(line);
+	ft_free_strs(&line, 0);
 	line = ft_savechars(temp);
 	return (ft_returnline(temp));
 }
@@ -276,7 +288,7 @@ char	*get_next_line(int fd)
 // 	char	*out;
 
 // 	(void)argc;
-// 	fd = open("tests/empty.txt", O_RDONLY);
+// 	fd = open("tests/41_with_nl.txt", O_RDONLY);
 // 	out = "";
 // 	if (fd == -1)
 // 		return (-1);
