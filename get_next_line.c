@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/17 18:31:42 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:46:39 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*get_next_line(int fd)
 		if (ft_strchr(line, '\n') != NULL || bytes < BUFFER_SIZE)
 			break ;
 	}
-	if (line[0] == '\0')
+	if (!line || line[0] == '\0')
 	{
 		free(line);
 		// free(temp);
@@ -276,7 +276,7 @@ char	*get_next_line(int fd)
 // 	char	*out;
 
 // 	(void)argc;
-// 	fd = open("tests/name.txt", O_RDONLY);
+// 	fd = open("tests/empty.txt", O_RDONLY);
 // 	out = "";
 // 	if (fd == -1)
 // 		return (-1);
