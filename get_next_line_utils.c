@@ -6,42 +6,38 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:53 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/17 18:31:05 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/22 22:55:13 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /**
- * @brief Allocates enough space for count objects that are size bytes of 
- * memory each and returns a pointer to the allocated memory.  The 
- * allocated memory is filled with bytes of value zero. If there is an 
- * error, they return a NULL pointer and set errno to ENOMEM.
+ * @brief Checks for the existence of a string and frees it in case
+ * of it existing. If less than 3 parameters are used. Use 0 in the
+ * "unused" parameter. For example, ft_free_strs(str, 0, 0).
  * 
- * @param count 
- * @param size Use sizeof(<data_type>)
- * @return void* 
+ * @param str 
+ * @param str2 
+ * @param str3 
  */
-void	*ft_calloc(size_t count, size_t size)
+void	ft_free_strs(char **str, char **str2, char **str3)
 {
-	void	*output;
-	size_t	counter;
-	char	*ptr;
-
-	if (count >= 4294967295 || size >= 4294967295)
-		return (NULL);
-	counter = 0;
-	output = malloc(count * size);
-	if (!output)
-		return (NULL);
-	ptr = (char *)output;
-	while (counter < count * size)
+	if (str && *str)
 	{
-		if (ptr[counter] != 0)
-			ptr[counter] = 0;
-		counter++;
+		free(*str);
+		*str = NULL;
 	}
-	return (output);
+	if (str2 && *str2)
+	{
+		free(*str2);
+		*str2 = NULL;
+	}
+	if (str3 && *str3)
+	{
+		free(*str3);
+		*str3 = NULL;
+	}
 }
 
 /**
@@ -54,22 +50,19 @@ void	*ft_calloc(size_t count, size_t size)
  */
 char	*ft_strdup(const char *s1)
 {
-	size_t	count;
 	char	*output;
-	size_t	index;
+	int		index;
 
+	if (!s1)
+		return (ft_strdup(""));
 	index = 0;
-	count = 0;
-	while (s1[index] != '\0')
-	{
-		count++;
+	while (s1[index])
 		index++;
-	}
-	output = (char *)malloc((count + 1) * sizeof(char));
+	output = (char *)malloc((index + 1) * sizeof(char));
 	if (!output)
 		return (NULL);
 	index = 0;
-	while (index < count)
+	while (s1[index])
 	{
 		output[index] = s1[index];
 		index++;
@@ -90,29 +83,28 @@ char	*ft_strdup(const char *s1)
  */
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*output;
-	size_t	output_index;
-	size_t	index;
+	char	*s;
+	int		len;
+	int		i;
 
-	if (!s2 | !s1)
+	len = 0;
+	if (!s1 && !s2)
 		return (NULL);
-	output = (char *)malloc(ft_strlen(s1) \
-			+ ft_strlen(s2) + 1 * sizeof(char));
-	if (!output)
+	while (s1 && s1[len])
+		len++;
+	i = 0;
+	while (s2 && s2[i])
+		i++;
+	s = ft_malloc_zero(len + i + 1, sizeof * s);
+	if (!s)
 		return (NULL);
-	output_index = 0;
-	index = 0;
-	while (output_index < ft_strlen(s1))
-	{
-		output[output_index++] = s1[index++];
-	}
-	index = 0;
-	while (output_index < ft_strlen(s1) + ft_strlen(s2))
-	{
-		output[output_index++] = s2[index++];
-	}
-	output[output_index] = '\0';
-	return (output);
+	len = -1;
+	while (s1 && s1[++len])
+		s[len] = s1[len];
+	i = -1;
+	while (s2 && s2[++i])
+		s[len + i] = s2[i];
+	return (s);
 }
 
 /**
@@ -167,4 +159,25 @@ char	*ft_strchr(const char *s, int c)
 	if (c == '\0' && ptr[index] == '\0')
 		return (&ptr[index]);
 	return (NULL);
+}
+
+
+void	*ft_malloc_zero(size_t count, size_t size)
+{
+	void			*r;
+	unsigned char	*p;
+	size_t			total;
+
+	total = count * size;
+	r = malloc(total);
+	if (!r)
+		return (NULL);
+	p = (unsigned char *)r;
+	while (total != 0)
+	{
+		*p = '\0';
+		p++;
+		total--;
+	}
+	return (r);
 }
