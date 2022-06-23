@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:51:25 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/22 22:54:43 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/23 14:17:15 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,11 @@ char	*ft_prepare_line(char **save, char **temp);
 char	*after_nl(char *str);
 char	*before_nl(char *str);
 
-/* Utils  */
+/* Utils */
+void	*ft_calloc(size_t count, size_t size);
 void	ft_free_strs(char **str, char **str2, char **str3);
+char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strchr(const char *s, int c);
-size_t	ft_strlen(const char *str);
-void	*ft_malloc_zero(size_t count, size_t size);
 
 #endif

@@ -6,11 +6,33 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:53 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/22 22:55:13 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/23 14:17:41 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*output;
+	size_t	counter;
+	char	*ptr;
+
+	if (count >= 4294967295 || size >= 4294967295)
+		return (NULL);
+	counter = 0;
+	output = malloc(count * size);
+	if (!output)
+		return (NULL);
+	ptr = (char *)output;
+	while (counter < count * size)
+	{
+		if (ptr[counter] != 0)
+			ptr[counter] = 0;
+		counter++;
+	}
+	return (output);
+}
 
 /**
  * @brief Checks for the existence of a string and frees it in case
@@ -38,94 +60,6 @@ void	ft_free_strs(char **str, char **str2, char **str3)
 		free(*str3);
 		*str3 = NULL;
 	}
-}
-
-/**
- * @brief Allocates sufficient memory for a copy of the string s1, does the 
- * copy, and returns a pointer to it.  The pointer may subsequently be used 
- * as an argument to the function free(3).
- * 
- * @param s1 
- * @return char* 
- */
-char	*ft_strdup(const char *s1)
-{
-	char	*output;
-	int		index;
-
-	if (!s1)
-		return (ft_strdup(""));
-	index = 0;
-	while (s1[index])
-		index++;
-	output = (char *)malloc((index + 1) * sizeof(char));
-	if (!output)
-		return (NULL);
-	index = 0;
-	while (s1[index])
-	{
-		output[index] = s1[index];
-		index++;
-	}
-	output[index] = '\0';
-	return (output);
-}
-
-/**
- * @brief Allocates (with malloc(3)) and returns a new string, which is 
- * the result of the concatenation of ’s1’ and ’s2’.
- * 
- * Returns the new string or NULL if the allocation fails.
- * 
- * @param s1 
- * @param s2 
- * @return char* 
- */
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*s;
-	int		len;
-	int		i;
-
-	len = 0;
-	if (!s1 && !s2)
-		return (NULL);
-	while (s1 && s1[len])
-		len++;
-	i = 0;
-	while (s2 && s2[i])
-		i++;
-	s = ft_malloc_zero(len + i + 1, sizeof * s);
-	if (!s)
-		return (NULL);
-	len = -1;
-	while (s1 && s1[++len])
-		s[len] = s1[len];
-	i = -1;
-	while (s2 && s2[++i])
-		s[len + i] = s2[i];
-	return (s);
-}
-
-/**
- * @brief Computes the length of the string s.  The strnlen() function 
- * attempts to compute the length of s, but never scans beyond the first 
- * maxlen bytes of s. Returns the number of characters that precede the 
- * terminating NUL character.
- * 
- * @param str 
- * @return size_t 
- */
-size_t	ft_strlen(const char *str)
-{
-	size_t		counter;
-
-	counter = 0;
-	while (str[counter] != '\0')
-	{
-		counter += 1;
-	}
-	return (counter);
 }
 
 /**
@@ -161,23 +95,69 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-
-void	*ft_malloc_zero(size_t count, size_t size)
+/**
+ * @brief Allocates sufficient memory for a copy of the string s1, does the 
+ * copy, and returns a pointer to it.  The pointer may subsequently be used 
+ * as an argument to the function free(3).
+ * 
+ * @param s1 
+ * @return char* 
+ */
+char	*ft_strdup(const char *s1)
 {
-	void			*r;
-	unsigned char	*p;
-	size_t			total;
+	char	*output;
+	int		index;
 
-	total = count * size;
-	r = malloc(total);
-	if (!r)
+	if (!s1)
+		return (ft_strdup(""));
+	index = 0;
+	while (s1[index] != '\0')
+		index++;
+	output = (char *)malloc((index + 1) * sizeof(char));
+	if (!output)
 		return (NULL);
-	p = (unsigned char *)r;
-	while (total != 0)
+	index = 0;
+	while (s1[index] != '\0')
 	{
-		*p = '\0';
-		p++;
-		total--;
+		output[index] = s1[index];
+		index++;
 	}
-	return (r);
+	output[index] = '\0';
+	return (output);
+}
+
+/**
+ * @brief Allocates (with malloc(3)) and returns a new string, which is 
+ * the result of the concatenation of ’s1’ and ’s2’.
+ * 
+ * Returns the new string or NULL if the allocation fails.
+ * 
+ * @param s1 
+ * @param s2 
+ * @return char* 
+ */
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*output;
+	int		s1_i;
+	int		s2_i;
+
+	if (!s1 && !s2)
+		return (NULL);
+	s1_i = 0;
+	s2_i = 0;
+	while (s1[s1_i])
+		s1_i++;
+	while (s2[s2_i])
+		s2_i++;
+	output = ft_calloc(s1_i + s2_i + 1, sizeof(char));
+	if (!output)
+		return (NULL);
+	s1_i = -1;
+	while (s1[++s1_i])
+		output[s1_i] = s1[s1_i];
+	s2_i = -1;
+	while (s2[++s2_i])
+		output[s1_i + s2_i] = s2[s2_i];
+	return (output);
 }
