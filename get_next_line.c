@@ -6,7 +6,7 @@
 /*   By: stena-he <stena-he@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:52:51 by stena-he          #+#    #+#             */
-/*   Updated: 2022/06/23 16:40:13 by stena-he         ###   ########.fr       */
+/*   Updated: 2022/06/24 19:50:17 by stena-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*before_nl(char *str)
 		index++;
 	if (str[index] == '\n')
 		index++;
-	output = ft_calloc(index + 1, sizeof * output);
+	output = ft_calloc(index + 1, sizeof(char));
 	if (!output)
 		return (NULL);
 	index = 0;
@@ -50,7 +50,7 @@ char	*after_nl(char *str)
 		index++;
 	if (str[index] == '\n')
 		index++;
-	output = ft_calloc((counter - index) + 1, sizeof * output);
+	output = ft_calloc((counter - index) + 1, sizeof(char));
 	if (!output)
 		return (NULL);
 	counter = 0;
