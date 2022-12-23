@@ -21,3 +21,5 @@ Execution:
 ``
 ./a.out [file]
 ``
+
+The expected output with this instructions is the entire contents of the given file.
